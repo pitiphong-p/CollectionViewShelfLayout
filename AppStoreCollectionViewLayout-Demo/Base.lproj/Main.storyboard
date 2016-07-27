@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cxj-YK-evD">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--App Store Collection View Layout Demo View Controller-->
+        <scene sceneID="4sm-Wn-Yjj">
+            <objects>
+                <collectionViewController id="cxj-YK-evD" customClass="AppStoreCollectionViewLayoutDemoViewController" customModule="AppStoreCollectionViewLayout_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="RlN-CA-HNm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewLayout key="collectionViewLayout" id="Oov-UB-0At" customClass="CollectionViewShelfLayout" customModule="CollectionViewShelfLayout">
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="size" keyPath="cellSize">
+                                    <size key="value" width="80" height="140"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="sectionHeaderHeight">
+                                    <real key="value" value="50"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <outlet property="headerView" destination="JUW-7O-R50" id="D4P-Ry-Y73"/>
+                            </connections>
+                        </collectionViewLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="2fU-un-iYz" customClass="AppStoreCollectionViewCell" customModule="AppStoreCollectionViewLayout_Demo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="80" height="140"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="80" height="140"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A long long app name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAK-pc-b8f">
+                                            <rect key="frame" x="0.0" y="82" width="80" height="33.5"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AFz-Qi-qm6">
+                                            <rect key="frame" x="0.0" y="119.5" width="80" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0An-ED-Ue7">
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="0An-ED-Ue7" secondAttribute="height" multiplier="1:1" id="q2L-E9-JEi"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="OAK-pc-b8f" firstAttribute="top" secondItem="0An-ED-Ue7" secondAttribute="bottom" constant="2" id="2Tl-H2-Xde"/>
+                                    <constraint firstItem="0An-ED-Ue7" firstAttribute="top" secondItem="2fU-un-iYz" secondAttribute="top" id="4Vp-Ue-3ib"/>
+                                    <constraint firstAttribute="leading" secondItem="0An-ED-Ue7" secondAttribute="leading" id="6zq-R1-7ts"/>
+                                    <constraint firstAttribute="trailing" secondItem="OAK-pc-b8f" secondAttribute="trailing" id="8jv-Q2-Ova"/>
+                                    <constraint firstAttribute="trailing" secondItem="0An-ED-Ue7" secondAttribute="trailing" id="E5g-DI-0hT"/>
+                                    <constraint firstAttribute="trailing" secondItem="AFz-Qi-qm6" secondAttribute="trailing" id="T98-nT-2mu"/>
+                                    <constraint firstItem="AFz-Qi-qm6" firstAttribute="leading" secondItem="2fU-un-iYz" secondAttribute="leading" id="TeT-uy-qHt"/>
+                                    <constraint firstItem="OAK-pc-b8f" firstAttribute="centerX" secondItem="2fU-un-iYz" secondAttribute="centerX" id="jTm-EC-nwX"/>
+                                    <constraint firstItem="OAK-pc-b8f" firstAttribute="leading" secondItem="2fU-un-iYz" secondAttribute="leading" id="kAd-SC-LQG"/>
+                                    <constraint firstItem="AFz-Qi-qm6" firstAttribute="top" secondItem="OAK-pc-b8f" secondAttribute="bottom" constant="4" id="sbC-Aw-NMP"/>
+                                </constraints>
+                                <size key="customSize" width="80" height="140"/>
+                                <connections>
+                                    <outlet property="appIconImageView" destination="0An-ED-Ue7" id="OFE-B0-KGl"/>
+                                    <outlet property="appNameLabel" destination="OAK-pc-b8f" id="vYt-BR-grt"/>
+                                    <outlet property="appPriceLabel" destination="AFz-Qi-qm6" id="vLB-9x-AKP"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="cxj-YK-evD" id="hQL-3b-flh"/>
+                            <outlet property="delegate" destination="cxj-YK-evD" id="fJt-KT-Gvv"/>
+                        </connections>
+                    </collectionView>
+                    <connections>
+                        <outlet property="headerView" destination="JUW-7O-R50" id="n0g-ih-j6z"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aAS-Uw-zs4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="JUW-7O-R50">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="129"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ml7-hk-0PD">
+                            <rect key="frame" x="62" y="48.5" width="116" height="33"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Ml7-hk-0PD" secondAttribute="bottom" constant="40" id="8Te-Q7-rSI"/>
+                        <constraint firstItem="Ml7-hk-0PD" firstAttribute="centerX" secondItem="JUW-7O-R50" secondAttribute="centerX" id="Ebm-1b-moC"/>
+                        <constraint firstItem="Ml7-hk-0PD" firstAttribute="centerY" secondItem="JUW-7O-R50" secondAttribute="centerY" id="Ixu-Yh-QCn"/>
+                        <constraint firstItem="Ml7-hk-0PD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JUW-7O-R50" secondAttribute="top" constant="40" id="ZVt-ZI-BgC"/>
+                    </constraints>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="553" y="473"/>
+        </scene>
+    </scenes>
+</document>
