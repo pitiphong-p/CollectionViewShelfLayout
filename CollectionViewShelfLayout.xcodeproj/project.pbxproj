@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		8A8DB5171D476F7F00F21FC7 /* CollectionViewShelfLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8A8DB51F1D476FF400F21FC7 /* CollectionViewShelfLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */; };
+		8A8DB53F1D48855600F21FC7 /* UIScrollViewGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A8DB53E1D4884DD00F21FC7 /* UIScrollViewGestureDelegate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8A8DB5131D476F7F00F21FC7 /* CollectionViewShelfLayout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CollectionViewShelfLayout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewShelfLayout.h; sourceTree = "<group>"; };
 		8A8DB5181D476F7F00F21FC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewShelfLayout.swift; sourceTree = "<group>"; };
+		8A8DB53E1D4884DD00F21FC7 /* UIScrollViewGestureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIScrollViewGestureDelegate.h; sourceTree = "<group>"; };
+		8A8DB5401D48868700F21FC7 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,9 +52,20 @@
 			isa = PBXGroup;
 			children = (
 				8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */,
+				8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */,
+				8A8DB5441D489C2100F21FC7 /* Private */,
 				8A8DB5181D476F7F00F21FC7 /* Info.plist */,
 			);
 			path = CollectionViewShelfLayout;
+			sourceTree = "<group>";
+		};
+		8A8DB5441D489C2100F21FC7 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				8A8DB53E1D4884DD00F21FC7 /* UIScrollViewGestureDelegate.h */,
+				8A8DB5401D48868700F21FC7 /* module.modulemap */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -60,6 +76,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8DB5171D476F7F00F21FC7 /* CollectionViewShelfLayout.h in Headers */,
+				8A8DB53F1D48855600F21FC7 /* UIScrollViewGestureDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +107,7 @@
 		8A8DB50A1D476F7F00F21FC7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Pitiphong Phongpattranont";
 				TargetAttributes = {
@@ -104,6 +122,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 8A8DB5091D476F7F00F21FC7;
 			productRefGroup = 8A8DB5141D476F7F00F21FC7 /* Products */;
@@ -130,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A8DB51F1D476FF400F21FC7 /* CollectionViewShelfLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,34 +250,39 @@
 		8A8DB51C1D476F7F00F21FC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CollectionViewShelfLayout/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_PRIVATE_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.pitiphong.CollectionViewShelfLayout;
-				PRODUCT_NAME = CollectionViewShelfLayout;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CollectionViewShelfLayout/Private";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		8A8DB51D1D476F7F00F21FC7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CollectionViewShelfLayout/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_PRIVATE_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.pitiphong.CollectionViewShelfLayout;
-				PRODUCT_NAME = CollectionViewShelfLayout;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CollectionViewShelfLayout/Private";
 			};
 			name = Release;
 		};
