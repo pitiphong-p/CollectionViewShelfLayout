@@ -1,8 +1,0 @@
-/* module.private.modulemap */
-module CollectionViewShelfLayoutPrivate {
-
-    header "UIScrollViewGestureDelegate.h"
-    
-    export *
-
-}

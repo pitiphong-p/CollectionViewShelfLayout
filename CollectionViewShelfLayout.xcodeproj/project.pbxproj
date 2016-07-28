@@ -11,7 +11,6 @@
 		8A8C89391D4A797100E2F53B /* CollectionViewShelfLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8DB5131D476F7F00F21FC7 /* CollectionViewShelfLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A8DB5171D476F7F00F21FC7 /* CollectionViewShelfLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A8DB51F1D476FF400F21FC7 /* CollectionViewShelfLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */; };
-		8A8DB53F1D48855600F21FC7 /* UIScrollViewGestureDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A8DB53E1D4884DD00F21FC7 /* UIScrollViewGestureDelegate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8AC87D7D1D48EF7C00B0DAFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC87D731D48EF7C00B0DAFE /* AppDelegate.swift */; };
 		8AC87D7E1D48EF7C00B0DAFE /* Apps.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC87D741D48EF7C00B0DAFE /* Apps.plist */; };
 		8AC87D7F1D48EF7C00B0DAFE /* AppStoreCollectionViewLayoutDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC87D751D48EF7C00B0DAFE /* AppStoreCollectionViewLayoutDemoViewController.swift */; };
@@ -49,8 +48,6 @@
 		8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewShelfLayout.h; sourceTree = "<group>"; };
 		8A8DB5181D476F7F00F21FC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewShelfLayout.swift; sourceTree = "<group>"; };
-		8A8DB53E1D4884DD00F21FC7 /* UIScrollViewGestureDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIScrollViewGestureDelegate.h; sourceTree = "<group>"; };
-		8A8DB5401D48868700F21FC7 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		8AC87D4E1D48EEFE00B0DAFE /* AppStoreCollectionViewLayout-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppStoreCollectionViewLayout-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC87D721D48EF7B00B0DAFE /* AppStoreCollectionViewLayout-Demo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppStoreCollectionViewLayout-Demo-Bridging-Header.h"; sourceTree = "<group>"; };
 		8AC87D731D48EF7C00B0DAFE /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -105,18 +102,8 @@
 				8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */,
 				8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */,
 				8A8DB5181D476F7F00F21FC7 /* Info.plist */,
-				8A8DB5441D489C2100F21FC7 /* Private */,
 			);
 			path = CollectionViewShelfLayout;
-			sourceTree = "<group>";
-		};
-		8A8DB5441D489C2100F21FC7 /* Private */ = {
-			isa = PBXGroup;
-			children = (
-				8A8DB53E1D4884DD00F21FC7 /* UIScrollViewGestureDelegate.h */,
-				8A8DB5401D48868700F21FC7 /* module.modulemap */,
-			);
-			path = Private;
 			sourceTree = "<group>";
 		};
 		8AC87D4F1D48EEFE00B0DAFE /* AppStoreCollectionViewLayout-Demo */ = {
@@ -150,7 +137,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8DB5171D476F7F00F21FC7 /* CollectionViewShelfLayout.h in Headers */,
-				8A8DB53F1D48855600F21FC7 /* UIScrollViewGestureDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,11 +391,9 @@
 				INFOPLIST_FILE = CollectionViewShelfLayout/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_PRIVATE_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.pitiphong.CollectionViewShelfLayout;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CollectionViewShelfLayout/Private";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -426,11 +410,9 @@
 				INFOPLIST_FILE = CollectionViewShelfLayout/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_PRIVATE_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.pitiphong.CollectionViewShelfLayout;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/CollectionViewShelfLayout/Private";
 			};
 			name = Release;
 		};

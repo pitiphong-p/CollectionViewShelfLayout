@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CollectionViewShelfLayoutPrivate
 
 
 private let ShelfElementKindCollectionHeader = "ShelfElementKindCollectionHeader"
@@ -391,14 +390,14 @@ private class TrackingScrollView: UIScrollView {
   
   @objc private override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
     guard let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer where panGestureRecognizer === self.panGestureRecognizer else {
-      return super.gestureRecognizerShouldBegin(gestureRecognizer)
+      return false
     }
     
     let positionInTrackingView = panGestureRecognizer.locationInView(trackingView)
     return trackingFrame.contains(positionInTrackingView)
   }
   
-  @objc private override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+  @objc private func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     guard let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer where panGestureRecognizer === self.panGestureRecognizer else {
       return false
     }
@@ -409,9 +408,9 @@ private class TrackingScrollView: UIScrollView {
     return true
   }
   
-  @objc private override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+  @objc private func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
     guard let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer where self.panGestureRecognizer === panGestureRecognizer else {
-      return super.gestureRecognizer(gestureRecognizer, shouldReceiveTouch: touch)
+      return false
     }
     
     let positionInTrackingView = touch.locationInView(trackingView)
