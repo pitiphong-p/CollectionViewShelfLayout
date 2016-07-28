@@ -16,6 +16,17 @@ This project comes with built in *`CollectionViewShelfLayout framework`* target.
 ````swift
 import CollectionViewShelfLayout
 ````
+## CocoaPods
+Add the following to your `Podfile`
+````ruby
+pod 'CollectionViewShelfLayout'
+use_frameworks!
+````
+## Carthage
+Add the following to your `Cartfile`
+````ruby
+github "pitiphong-p/CollectionViewShelfLayout"
+````
 
 # Usage
 Set collecion view's layout to an instance of `CollectionViewShelfLayout`. Set the layout's properties you want (eg. cellSize). You can set its layout both via code or `Storyboard`.
