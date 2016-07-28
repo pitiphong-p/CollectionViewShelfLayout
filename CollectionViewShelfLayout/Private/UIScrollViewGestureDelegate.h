@@ -2,8 +2,8 @@
 //  UIScrollViewGestureDelegate.h
 //  CollectionViewShelfLayout
 //
-//  Created by Pitiphong Phongpattranont on 7/27/2559 BE.
-//  Copyright © 2559 Pitiphong Phongpattranont. All rights reserved.
+//  Created by Pitiphong Phongpattranont on 7/27/2016.
+//  Copyright © 2016 Pitiphong Phongpattranont. All rights reserved.
 //
 
 @import UIKit;

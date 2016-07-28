@@ -2,20 +2,24 @@
 //  CollectionViewShelfLayout.swift
 //  CollectionViewShelfLayout
 //
-//  Created by Pitiphong Phongpattranont on 7/26/2559 BE.
-//  Copyright © 2559 Pitiphong Phongpattranont. All rights reserved.
+//  Created by Pitiphong Phongpattranont on 7/26/2016.
+//  Copyright © 2016 Pitiphong Phongpattranont. All rights reserved.
 //
 
 import UIKit
 import CollectionViewShelfLayoutPrivate
 
+
 private let ShelfElementKindCollectionHeader = "ShelfElementKindCollectionHeader"
 private let ShelfElementKindCollectionFooter = "ShelfElementKindCollectionFooter"
 
+/// An element kind of *Section Header*
 public let ShelfElementKindSectionHeader = "ShelfElementKindSectionHeader"
+/// An element kind of *Section Footer*
 public let ShelfElementKindSectionFooter = "ShelfElementKindSectionFooter"
 
 
+/// A collection view layout mimics the layout of the iOS App Store.
 public class CollectionViewShelfLayout: UICollectionViewLayout {
   private var headerViewLayoutAttributes: CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes?
   private var footerViewLayoutAttributes: CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes?
@@ -28,16 +32,24 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
   private var sectionFooterViewsLayoutAttributes: [UICollectionViewLayoutAttributes] = []
   private var cellsLayoutAttributes: [[UICollectionViewLayoutAttributes]] = []
   
+  /// A height of each section header. Set this value to 0.0 if you don't want section header views. Default is *0.0*
   @IBInspectable public var sectionHeaderHeight: CGFloat = 0.0
+  /// A height of each section footer. Set this value to 0.0 if you don't want section footer views. Default is *0.0*
   @IBInspectable public var sectionFooterHeight: CGFloat = 0.0
+  /// An inset around the cell area in each section inset from section header and footer view and the collection view's bounds. Default is *zero* on every sides.
   @IBInspectable public var sectionCellInset: UIEdgeInsets = UIEdgeInsetsZero
+  /// A size of each cells.
   @IBInspectable public var cellSize: CGSize = CGSize.zero
+  /// Horizontal spacing between cells. Default value is *8.0*
   @IBInspectable public var spacing: CGFloat = 8.0
   
+  /// A header view of the collection view. Similar to table view's *tableHeaderView*
   @IBOutlet public var headerView: UIView?
+  /// A footer view of the collection view. Similar to table view's *tableFooterView*
   @IBOutlet public var footerView: UIView?
   
-  private var preparingForLayout = false
+  /// A boolean indicates that the layout is preparing for cell panning. This will be set to *true* when we invalidate layout by panning cells.
+  private var preparingForCellPanning = false
   
   public override init() {
     super.init()
@@ -52,15 +64,17 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
   }
   
   public override func prepareLayout() {
-    guard let collectionView = collectionView else {
+    defer {
       super.prepareLayout()
+    }
+    
+    guard let collectionView = collectionView else {
       return
     }
 
-    if preparingForLayout {
-      self.preparingForLayout = false
+    if preparingForCellPanning {
+      self.preparingForCellPanning = false
       
-      super.prepareLayout()
       return
     }
     
@@ -74,7 +88,7 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
     cellPanningScrollViews = []
     
     do {
-      var currentY = collectionView.bounds.minY
+      var currentY = CGFloat(0.0)
       let collectionBounds = collectionView.bounds
       let collectionViewWidth = collectionBounds.width
       if let headerView = headerView {
@@ -143,9 +157,8 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
         panningScrollView.trackingView = collectionView
         panningScrollView.trackingFrame = sectionCellFrame
         cellPanningScrollViews.append(panningScrollView)
-        
-        panningScrollView.panGestureRecognizer
       }
+      
       if let footerView = footerView {
         footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, withIndexPath: NSIndexPath(index: 0))
         footerViewLayoutAttributes?.view = footerView
@@ -155,8 +168,6 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
         currentY += footerViewSize.height
       }
     }
-    
-    super.prepareLayout()
   }
   
   public override func collectionViewContentSize() -> CGSize {
@@ -167,7 +178,7 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
     let numberOfSections = CGFloat(collectionView.numberOfSections())
     
     let headerHeight = headerViewLayoutAttributes?.size.height ?? 0.0
-    let footterHeight = footerViewLayoutAttributes?.size.height ?? 0.0
+    let footerHeight = footerViewLayoutAttributes?.size.height ?? 0.0
     let sectionHeaderHeight = self.sectionHeaderHeight * numberOfSections
     let sectionFooterHeight = self.sectionFooterHeight * numberOfSections
     
@@ -175,7 +186,7 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
     
     return CGSize(
       width: width,
-      height: headerHeight + footterHeight + sectionHeaderHeight + sectionFooterHeight + sectionCellInsetHeight + (cellSize.height * numberOfSections)
+      height: headerHeight + footerHeight + sectionHeaderHeight + sectionFooterHeight + sectionCellInsetHeight + (cellSize.height * numberOfSections)
     )
   }
   
@@ -254,11 +265,13 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
       
       let offset = -panningInformation.contentOffset.x - minX
       
+      // UICollectionViewLayout will not guarantee to call prepareLayout on every invalidation.
+      // So we do the panning cell translation in the invalidate layout so that we can guarantee that every panning will be accounted.
       panningCellsAttributes.forEach({ (attributes) in
         attributes.frame.offsetInPlace(dx: offset, dy: 0.0)
       })
       
-      self.preparingForLayout = true
+      self.preparingForCellPanning = true
     }
     
     super.invalidateLayoutWithContext(context)
@@ -274,6 +287,10 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
 
 extension CollectionViewShelfLayout: UIScrollViewDelegate {
   public func scrollViewDidScroll(scrollView: UIScrollView) {
+    // Because we tell Collection View that it has its width of the content size equals to its width of its frame (and bounds).
+    // This means that we can use its pan gesture recognizer to scroll our cells
+    // Our hack is to use a scroll view per section, steal that scroll view's pan gesture recognizer and add it to collection view.
+    // Uses the scroll view's content offset to tell us how uses scroll our cells
     guard let trackingScrollView = scrollView as? TrackingScrollView else { return }
     
     let context = CollectionViewShelfLayoutInvalidationContext(panningScrollView: trackingScrollView)
