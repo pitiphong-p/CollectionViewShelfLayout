@@ -14,16 +14,16 @@ private let reuseIdentifier = "Cell"
 
 
 protocol AppStoreCollectionSectionHeaderViewDelegate: class {
-  func sectionHeaderViewDidTappedButton(view: AppStoreCollectionSectionHeaderView)
+  func sectionHeaderViewDidTappedButton(_ view: AppStoreCollectionSectionHeaderView)
 }
 
 class AppStoreCollectionSectionHeaderView: UICollectionReusableView {
   let label: UILabel = UILabel()
   let button: UIButton = UIButton()
-  var indexPath: NSIndexPath?
+  var indexPath: IndexPath?
   
-  override func applyLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) {
-    super.applyLayoutAttributes(layoutAttributes)
+  override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+    super.apply(layoutAttributes)
     
     self.indexPath = layoutAttributes.indexPath
   }
@@ -33,23 +33,23 @@ class AppStoreCollectionSectionHeaderView: UICollectionReusableView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    userInteractionEnabled = true
+    isUserInteractionEnabled = true
     
-    backgroundColor = UIColor.whiteColor()
+    backgroundColor = UIColor.white
     label.translatesAutoresizingMaskIntoConstraints = false
     button.translatesAutoresizingMaskIntoConstraints = false
     addSubview(label)
     addSubview(button)
     
-    label.leadingAnchor.constraintEqualToAnchor(layoutMarginsGuide.leadingAnchor).active = true
-    label.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
+    label.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
+    label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     
-    button.trailingAnchor.constraintEqualToAnchor(layoutMarginsGuide.trailingAnchor).active = true
-    button.lastBaselineAnchor.constraintEqualToAnchor(label.lastBaselineAnchor).active = true
+    button.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
+    button.lastBaselineAnchor.constraint(equalTo: label.lastBaselineAnchor).isActive = true
     
-    button.leadingAnchor.constraintGreaterThanOrEqualToAnchor(label.trailingAnchor, constant: 8.0).active = true
+    button.leadingAnchor.constraint(greaterThanOrEqualTo: label.trailingAnchor, constant: 8.0).isActive = true
     
-    button.addTarget(self, action: #selector(buttonTapped), forControlEvents: .TouchUpInside)
+    button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
   }
   
   @objc func buttonTapped() {
@@ -71,9 +71,9 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
   }
   
   let appData: [Section: [AppDetail]] = {
-    let bundle = NSBundle(forClass: AppStoreCollectionViewLayoutDemoViewController.self)
-    let appDataPListURL = bundle.URLForResource("Apps", withExtension: "plist")!
-    let appDataPList = NSDictionary(contentsOfURL: appDataPListURL)! as! [String: [[String: AnyObject]]]
+    let bundle = Bundle(for: AppStoreCollectionViewLayoutDemoViewController.self)
+    let appDataPListURL = bundle.url(forResource: "Apps", withExtension: "plist")!
+    let appDataPList = NSDictionary(contentsOf: appDataPListURL)! as! [String: [[String: AnyObject]]]
     
     var appData = [Section: [AppDetail]]()
     for (sectionName, apps) in appDataPList {
@@ -86,12 +86,12 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
     return appData
   }()
   
-  subscript (appDetail indexPath: NSIndexPath) -> AppDetail {
-    return appData[sections[indexPath.section]]![indexPath.row]
+  subscript (appDetail indexPath: IndexPath) -> AppDetail {
+    return appData[sections[(indexPath as NSIndexPath).section]]![(indexPath as NSIndexPath).row]
   }
 
   var sections: [Section] {
-    return appData.keys.sort({ (firstSection, secondSection) in
+    return appData.keys.sorted(by: { (firstSection, secondSection) in
       return firstSection.rawValue < secondSection.rawValue
     })
   }
@@ -105,7 +105,7 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
       
       headerView.translatesAutoresizingMaskIntoConstraints = false
       
-      collectionView?.registerClass(AppStoreCollectionSectionHeaderView.self, forSupplementaryViewOfKind: ShelfElementKindSectionHeader, withReuseIdentifier: "Header")
+      collectionView?.register(AppStoreCollectionSectionHeaderView.self, forSupplementaryViewOfKind: ShelfElementKindSectionHeader, withReuseIdentifier: "Header")
     }
   }
   
@@ -117,33 +117,33 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
   
   // MARK: UICollectionViewDataSource
   
-  override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+  override func numberOfSections(in collectionView: UICollectionView) -> Int {
     return sections.count
   }
   
-  override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return appData[sections[section]]?.count ?? 0
   }
   
-  let priceFormatter: NSNumberFormatter = {
-    let formatter = NSNumberFormatter()
+  let priceFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
     formatter.currencyCode = "USD"
-    formatter.numberStyle = NSNumberFormatterStyle.CurrencyAccountingStyle
+    formatter.numberStyle = NumberFormatter.Style.currencyAccounting
     return formatter
   }()
 
-  override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! AppStoreCollectionViewCell
+  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! AppStoreCollectionViewCell
     let appDetail = self[appDetail: indexPath]
     cell.appNameLabel.text = appDetail.name
-    cell.appPriceLabel.text = priceFormatter.stringFromNumber(appDetail.price)
+    cell.appPriceLabel.text = priceFormatter.string(from: NSNumber(value: appDetail.price))
     
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) { 
-      let iconData = NSData(contentsOfURL: appDetail.iconURL)
+    DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { 
+      let iconData = try? Data(contentsOf: appDetail.iconURL)
       
-      if let iconData = iconData, let currentIndexPath = collectionView.indexPathForCell(cell) where currentIndexPath == indexPath {
+      if let iconData = iconData, let currentIndexPath = collectionView.indexPath(for: cell), currentIndexPath == indexPath {
         let icon = UIImage(data: iconData)
-        dispatch_async(dispatch_get_main_queue(), { 
+        DispatchQueue.main.async(execute: { 
           cell.appIconImageView.image = icon
         })
       }
@@ -151,61 +151,61 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
     return cell
   }
   
-  override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-    let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "Header", forIndexPath: indexPath)
+  override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath)
     if let view = view as? AppStoreCollectionSectionHeaderView {
-      view.label.text = sections[indexPath.section].rawValue
-      view.button.setTitle("See All >", forState: .Normal)
-      view.button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+      view.label.text = sections[(indexPath as NSIndexPath).section].rawValue
+      view.button.setTitle("See All >", for: UIControlState())
+      view.button.setTitleColor(UIColor.darkGray, for: UIControlState())
       view.delegate = self
     }
     return view
   }
   
-  override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let appData = self[appDetail: indexPath]
     print(appData.name)
     
     let appStoreViewerController = SKStoreProductViewController()
     appStoreViewerController.delegate = self
-    appStoreViewerController.loadProductWithParameters([SKStoreProductParameterITunesItemIdentifier : appData.id], completionBlock: { (result, error) in
+    appStoreViewerController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier : appData.id], completionBlock: { (result, error) in
       print(result, error)
     })
-    presentViewController(appStoreViewerController, animated: true, completion: nil)
+    present(appStoreViewerController, animated: true, completion: nil)
   }
 }
 
 extension AppStoreCollectionViewLayoutDemoViewController: SKStoreProductViewControllerDelegate {
-  func productViewControllerDidFinish(viewController: SKStoreProductViewController) {
-    dismissViewControllerAnimated(true, completion: nil)
+  func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+    dismiss(animated: true, completion: nil)
   }
 }
 
 extension AppStoreCollectionViewLayoutDemoViewController: AppStoreCollectionSectionHeaderViewDelegate {
-  func sectionHeaderViewDidTappedButton(view: AppStoreCollectionSectionHeaderView) {
+  func sectionHeaderViewDidTappedButton(_ view: AppStoreCollectionSectionHeaderView) {
     guard let indexPath = view.indexPath else {
       return
     }
-    let section = sections[indexPath.section]
-    let alertController = UIAlertController(title: section.rawValue, message: "You tapped the \(section.rawValue) section.", preferredStyle: .Alert)
+    let section = sections[(indexPath as NSIndexPath).section]
+    let alertController = UIAlertController(title: section.rawValue, message: "You tapped the \(section.rawValue) section.", preferredStyle: .alert)
     
     alertController.addAction(
-      UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil)
+      UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: nil)
     )
     
-    presentViewController(alertController, animated: true, completion: nil)
+    present(alertController, animated: true, completion: nil)
   }
 }
 
 struct AppDetail {
   let id: Int
   let name: String
-  let iconURL: NSURL
+  let iconURL: URL
   let price: Double
   
   init?(plistData: [String: AnyObject]) {
-    guard let id = plistData["id"] as? Int, name = plistData["name"] as? String,
-      iconURL = (plistData["iconURL"] as? String).flatMap(NSURL.init(string:)), price = plistData["price"] as? Double else {
+    guard let id = plistData["id"] as? Int, let name = plistData["name"] as? String,
+      let iconURL = (plistData["iconURL"] as? String).flatMap(URL.init(string:)), let price = plistData["price"] as? Double else {
       return nil
     }
     
