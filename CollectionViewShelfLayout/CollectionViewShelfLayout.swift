@@ -84,6 +84,8 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
     sectionHeaderViewsLayoutAttributes = []
     sectionFooterViewsLayoutAttributes = []
     cellsLayoutAttributes = []
+    
+    let oldPanningScrollViews = cellPanningScrollViews
     cellPanningScrollViews = []
     
     do {
@@ -113,7 +115,12 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
         }
         
         var currentCellX = collectionBounds.minX + sectionCellInset.left
+        if section < oldPanningScrollViews.count {
+          // Apply the old scrolling offset before preparing layout
+          currentCellX -= oldPanningScrollViews[section].contentOffset.x
+        }
         
+        let cellMinX = currentCellX - sectionCellInset.left
         currentY += sectionCellInset.top
         let topSectionCellMinY = currentY
         var cellInSectionAttributes: [UICollectionViewLayoutAttributes] = []
@@ -128,7 +135,7 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
         }
         let sectionCellFrame = CGRect(
           origin: CGPoint(x: 0.0, y: topSectionCellMinY),
-          size: CGSize(width: currentCellX - spacing + sectionCellInset.right, height: cellSize.height)
+          size: CGSize(width: currentCellX - spacing + sectionCellInset.right - cellMinX, height: cellSize.height)
         )
         sectionsCellFrame.append(sectionCellFrame)
         
@@ -155,6 +162,11 @@ public class CollectionViewShelfLayout: UICollectionViewLayout {
         panningScrollView.delegate = self
         panningScrollView.trackingView = collectionView
         panningScrollView.trackingFrame = sectionCellFrame
+        if section < oldPanningScrollViews.count {
+          // Apply scrolling content offset with the old offset before preparing layout
+          panningScrollView.contentOffset = oldPanningScrollViews[section].contentOffset
+        }
+        
         cellPanningScrollViews.append(panningScrollView)
       }
       
@@ -299,6 +311,7 @@ extension CollectionViewShelfLayout: UIScrollViewDelegate {
 
 
 // MARK: - App Store Collection Layout Data Types
+
 private class CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes: UICollectionViewLayoutAttributes {
   var view: UIView!
 }
