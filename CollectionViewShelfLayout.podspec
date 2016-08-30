@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.social_media_url   = "http://twitter.com/pitiphong_p"
 
   s.platform     = :ios, "9.0"
-  s.source       = { :git => "https://github.com/pitiphong-p/CollectionViewShelfLayout.git", :tag => "0.5.0" }
+  s.source       = { :git => "https://github.com/pitiphong-p/CollectionViewShelfLayout.git", :tag => "0.5.5" }
 
   s.source_files  = ["CollectionViewShelfLayout/*.swift"]
 
