@@ -170,6 +170,10 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
         cellPanningScrollViews.append(panningScrollView)
       }
       
+      for oldPanningScrollView in oldPanningScrollViews {
+        oldPanningScrollView.removeFromSuperview()
+      }
+      
       if let footerView = footerView {
         footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(index: 0))
         footerViewLayoutAttributes?.view = footerView
@@ -388,6 +392,9 @@ private class TrackingScrollView: UIScrollView {
     didSet {
       trackingView?.addGestureRecognizer(panGestureRecognizer)
       frame = trackingView?.bounds ?? .zero
+      translatesAutoresizingMaskIntoConstraints = false
+      trackingView?.insertSubview(self, at: 0)
+      alpha = 0
     }
   }
   var trackingFrame: CGRect = CGRect.zero {
