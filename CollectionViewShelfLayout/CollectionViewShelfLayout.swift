@@ -180,6 +180,13 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
       }
     }
   }
+    
+  open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    guard let collectionView = collectionView else {
+      return true
+    }
+    return collectionView.frame.size != newBounds.size
+  }
   
   open override var collectionViewContentSize: CGSize {
     guard let collectionView = collectionView else {
