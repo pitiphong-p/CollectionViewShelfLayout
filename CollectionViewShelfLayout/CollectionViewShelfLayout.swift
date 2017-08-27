@@ -170,6 +170,10 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
         cellPanningScrollViews.append(panningScrollView)
       }
       
+      for oldPanningScrollView in oldPanningScrollViews {
+        oldPanningScrollView.removeFromSuperview()
+      }
+      
       if let footerView = footerView {
         footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(index: 0))
         footerViewLayoutAttributes?.view = footerView
@@ -179,6 +183,13 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
         currentY += footerViewSize.height
       }
     }
+  }
+    
+  open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    guard let collectionView = collectionView else {
+      return true
+    }
+    return collectionView.frame.size != newBounds.size
   }
   
   open override var collectionViewContentSize: CGSize {
@@ -381,6 +392,9 @@ private class TrackingScrollView: UIScrollView {
     didSet {
       trackingView?.addGestureRecognizer(panGestureRecognizer)
       frame = trackingView?.bounds ?? .zero
+      translatesAutoresizingMaskIntoConstraints = false
+      trackingView?.insertSubview(self, at: 0)
+      alpha = 0
     }
   }
   var trackingFrame: CGRect = CGRect.zero {
