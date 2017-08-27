@@ -141,10 +141,12 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
     DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async { 
       let iconData = try? Data(contentsOf: appDetail.iconURL)
       
-      if let iconData = iconData, let currentIndexPath = collectionView.indexPath(for: cell), currentIndexPath == indexPath {
+      if let iconData = iconData {
         let icon = UIImage(data: iconData)
-        DispatchQueue.main.async(execute: { 
-          cell.appIconImageView.image = icon
+        DispatchQueue.main.async(execute: {
+          if let currentIndexPath = collectionView.indexPath(for: cell), currentIndexPath == indexPath {
+            cell.appIconImageView.image = icon
+          }
         })
       }
     }
@@ -169,7 +171,7 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
     let appStoreViewerController = SKStoreProductViewController()
     appStoreViewerController.delegate = self
     appStoreViewerController.loadProduct(withParameters: [SKStoreProductParameterITunesItemIdentifier : appData.id], completionBlock: { (result, error) in
-      print(result, error)
+      print(result, error as Any)
     })
     present(appStoreViewerController, animated: true, completion: nil)
   }

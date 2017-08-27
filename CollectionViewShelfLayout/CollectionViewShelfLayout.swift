@@ -87,6 +87,9 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
     
     let oldPanningScrollViews = cellPanningScrollViews
     cellPanningScrollViews = []
+    defer {
+      oldPanningScrollViews.forEach({ $0.trackingView = nil })
+    }
     
     do {
       var currentY = CGFloat(0.0)
@@ -166,12 +169,8 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
           // Apply scrolling content offset with the old offset before preparing layout
           panningScrollView.contentOffset = oldPanningScrollViews[section].contentOffset
         }
-        
+                
         cellPanningScrollViews.append(panningScrollView)
-      }
-      
-      for oldPanningScrollView in oldPanningScrollViews {
-        oldPanningScrollView.removeFromSuperview()
       }
       
       if let footerView = footerView {
@@ -352,8 +351,6 @@ private class CollectionViewShelfLayoutInvalidationContext: UICollectionViewLayo
   
   init(panningScrollView: TrackingScrollView) {
     self.panningScrollView = panningScrollView
-    
-    super.init()
   }
 }
 
@@ -387,14 +384,14 @@ private class ShelfHeaderFooterView: UICollectionReusableView {
 private class TrackingScrollView: UIScrollView {
   weak var trackingView: UIView? {
     willSet {
+      removeFromSuperview()
       trackingView?.removeGestureRecognizer(panGestureRecognizer)
     }
     didSet {
       trackingView?.addGestureRecognizer(panGestureRecognizer)
-      frame = trackingView?.bounds ?? .zero
       translatesAutoresizingMaskIntoConstraints = false
       trackingView?.insertSubview(self, at: 0)
-      alpha = 0
+      frame = CGRect(origin: .zero, size: trackingView?.bounds.size ?? .zero)
     }
   }
   var trackingFrame: CGRect = CGRect.zero {
@@ -407,12 +404,16 @@ private class TrackingScrollView: UIScrollView {
     super.init(frame: frame)
     layer.contents = UIImage().cgImage
     panGestureRecognizer.maximumNumberOfTouches = 1
+    isHidden = true
+    alpha = 0.0
   }
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     layer.contents = UIImage().cgImage
     panGestureRecognizer.maximumNumberOfTouches = 1
+    isHidden = true
+    alpha = 0.0
   }
   
   @objc fileprivate override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
