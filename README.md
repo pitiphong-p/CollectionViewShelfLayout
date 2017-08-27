@@ -29,6 +29,8 @@ github "pitiphong-p/CollectionViewShelfLayout"
 ````
 ## Swift 2
 You can use CollectionViewShelfLayout in Swift 2.2 by checking out tag `0.5.5`
+## Swift 4
+You can use CollectionViewShelfLayout in Swift 4.0 (which is currently in Beta) by checking out branch `swift-4`
 
 # Usage
 Set collecion view's layout to an instance of `CollectionViewShelfLayout`. Set the layout's properties you want (eg. cellSize). You can set its layout both via code or `Storyboard`.

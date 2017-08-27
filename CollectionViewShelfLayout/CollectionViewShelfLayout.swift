@@ -98,7 +98,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
       if let headerView = headerView {
         headerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionHeader, with: IndexPath(index: 0))
         headerViewLayoutAttributes?.view = headerView
-        let headerViewSize = headerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+        let headerViewSize = headerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
         headerViewLayoutAttributes?.size = headerViewSize
         headerViewLayoutAttributes?.frame = CGRect(origin: CGPoint(x: collectionBounds.minX, y: currentY), size: headerViewSize)
         currentY += headerViewSize.height
@@ -176,7 +176,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
       if let footerView = footerView {
         footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(index: 0))
         footerViewLayoutAttributes?.view = footerView
-        let footerViewSize = footerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: UILayoutPriorityRequired, verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+        let footerViewSize = footerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
         footerViewLayoutAttributes?.size = footerViewSize
         footerViewLayoutAttributes?.frame = CGRect(origin: CGPoint(x: collectionBounds.minX, y: currentY), size: footerViewSize)
         currentY += footerViewSize.height
@@ -212,38 +212,42 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
   }
   
   open override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-    let headerAndFooterAttributes: [UICollectionViewLayoutAttributes] = [ headerViewLayoutAttributes, footerViewLayoutAttributes ].flatMap({ $0 }).filter { (attributes) -> Bool in
-      return rect.intersects(attributes.frame)
-    }
-    
-    let visibleSections = sectionsFrame.enumerated().filter({ (index: Int, element: CGRect) -> Bool in
-      return rect.intersects(element)
-    }).map({ $0.offset })
-    
-    let visibleAttributes = visibleSections.flatMap { (section) -> [UICollectionViewLayoutAttributes] in
-      var attributes: [UICollectionViewLayoutAttributes] = []
-      if section < self.sectionHeaderViewsLayoutAttributes.count {
-        let header = self.sectionHeaderViewsLayoutAttributes[section]
-        if rect.intersects(header.frame) {
-          attributes.append(header)
-        }
-      }
-      
-      let visibleCellAttributes = self.cellsLayoutAttributes[section].filter({ (attributes) -> Bool in
+    let headerAndFooterAttributes: [UICollectionViewLayoutAttributes] = [ headerViewLayoutAttributes, footerViewLayoutAttributes ]
+      .flatMap({ $0 }).filter({ (attributes) -> Bool in
         return rect.intersects(attributes.frame)
       })
-      
-      attributes += visibleCellAttributes
-      
-      if section < self.sectionFooterViewsLayoutAttributes.count {
-        let footer = self.sectionFooterViewsLayoutAttributes[section]
-        if rect.intersects(footer.frame) {
-          attributes.append(footer)
+    
+    let visibleSections = sectionsFrame.enumerated()
+      .filter({ (index: Int, element: CGRect) -> Bool in
+        return rect.intersects(element)
+      })
+      .map({ $0.offset })
+    
+    let visibleAttributes = visibleSections
+      .flatMap({ (section) -> [UICollectionViewLayoutAttributes] in
+        var attributes: [UICollectionViewLayoutAttributes] = []
+        if section < self.sectionHeaderViewsLayoutAttributes.count {
+          let header = self.sectionHeaderViewsLayoutAttributes[section]
+          if rect.intersects(header.frame) {
+            attributes.append(header)
+          }
         }
-      }
-      
-      return attributes
-    }
+        
+        let visibleCellAttributes = self.cellsLayoutAttributes[section].filter({ (attributes) -> Bool in
+          return rect.intersects(attributes.frame)
+        })
+        
+        attributes += visibleCellAttributes
+        
+        if section < self.sectionFooterViewsLayoutAttributes.count {
+          let footer = self.sectionFooterViewsLayoutAttributes[section]
+          if rect.intersects(footer.frame) {
+            attributes.append(footer)
+          }
+        }
+        
+        return attributes
+      })
     
     return visibleAttributes + headerAndFooterAttributes
   }
@@ -280,9 +284,10 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
       let indexOfPanningScrollView = cellPanningScrollViews.index(of: panningInformation) {
       
       let panningCellsAttributes = cellsLayoutAttributes[indexOfPanningScrollView]
-      let minX = panningCellsAttributes.reduce(CGFloat.greatestFiniteMagnitude, { (currentX, attributes) in
-        return min(currentX, attributes.frame.minX)
-      }) - sectionCellInset.left
+      let minX = panningCellsAttributes
+        .reduce(CGFloat.greatestFiniteMagnitude, { (currentX, attributes) in
+          return min(currentX, attributes.frame.minX)
+        }) - sectionCellInset.left
       
       let offset = -panningInformation.contentOffset.x - minX
       
