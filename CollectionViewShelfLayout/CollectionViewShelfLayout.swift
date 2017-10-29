@@ -18,6 +18,19 @@ public let ShelfElementKindSectionHeader = "ShelfElementKindSectionHeader"
 public let ShelfElementKindSectionFooter = "ShelfElementKindSectionFooter"
 
 
+public protocol CollectionViewDelegateShelfLayout: UICollectionViewDelegate {
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+}
+
+extension CollectionViewDelegateShelfLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return (collectionViewLayout as? CollectionViewShelfLayout)?.cellSize ?? CGSize.zero
+  }
+}
+
+
+
 /// A collection view layout mimics the layout of the iOS App Store.
 open class CollectionViewShelfLayout: UICollectionViewLayout {
   fileprivate var headerViewLayoutAttributes: CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes?
@@ -91,96 +104,112 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
       oldPanningScrollViews.forEach({ $0.trackingView = nil })
     }
     
-    do {
-      var currentY = CGFloat(0.0)
-      let collectionBounds = collectionView.bounds
-      let collectionViewWidth = collectionBounds.width
-      if let headerView = headerView {
-        headerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionHeader, with: IndexPath(index: 0))
-        headerViewLayoutAttributes?.view = headerView
-        let headerViewSize = headerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-        headerViewLayoutAttributes?.size = headerViewSize
-        headerViewLayoutAttributes?.frame = CGRect(origin: CGPoint(x: collectionBounds.minX, y: currentY), size: headerViewSize)
-        currentY += headerViewSize.height
+    var currentY = CGFloat(0.0)
+    let collectionBounds = collectionView.bounds
+    let collectionViewWidth = collectionBounds.width
+    if let headerView = headerView {
+      headerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionHeader, with: IndexPath(index: 0))
+      headerViewLayoutAttributes?.view = headerView
+      let headerViewSize = headerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+      headerViewLayoutAttributes?.size = headerViewSize
+      headerViewLayoutAttributes?.frame = CGRect(origin: CGPoint(x: collectionBounds.minX, y: currentY), size: headerViewSize)
+      currentY += headerViewSize.height
+    }
+    
+    let numberOfSections = collectionView.numberOfSections
+    for section in 0..<numberOfSections {
+      let sectionMinY = currentY
+      if sectionHeaderHeight > 0.0 {
+        let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionHeader, with: IndexPath(index: section))
+        sectionHeaderAttributes.frame = CGRect(
+          origin: CGPoint(x: collectionBounds.minX, y: currentY),
+          size: CGSize(width: collectionBounds.width, height: sectionHeaderHeight)
+        )
+        sectionHeaderViewsLayoutAttributes.append(sectionHeaderAttributes)
+        currentY += sectionHeaderHeight
       }
       
-      let numberOfSections = collectionView.numberOfSections
-      for section in 0..<numberOfSections {
-        let sectionMinY = currentY
-        if sectionHeaderHeight > 0.0 {
-          let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionHeader, with: IndexPath(index: section))
-          sectionHeaderAttributes.frame = CGRect(
-            origin: CGPoint(x: collectionBounds.minX, y: currentY),
-            size: CGSize(width: collectionBounds.width, height: sectionHeaderHeight)
-          )
-          sectionHeaderViewsLayoutAttributes.append(sectionHeaderAttributes)
-          currentY += sectionHeaderHeight
-        }
-        
-        var currentCellX = collectionBounds.minX + sectionCellInset.left
-        if section < oldPanningScrollViews.count {
-          // Apply the old scrolling offset before preparing layout
-          currentCellX -= oldPanningScrollViews[section].contentOffset.x
-        }
-        
-        let cellMinX = currentCellX - sectionCellInset.left
-        currentY += sectionCellInset.top
-        let topSectionCellMinY = currentY
-        var cellInSectionAttributes: [UICollectionViewLayoutAttributes] = []
-        for item in 0..<collectionView.numberOfItems(inSection: section) {
-          let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(item: item, section: section))
-          cellAttributes.frame = CGRect(
-            origin: CGPoint(x: currentCellX, y: currentY),
-            size: cellSize
-          )
-          currentCellX += cellSize.width + spacing
-          cellInSectionAttributes.append(cellAttributes)
-        }
-        let sectionCellFrame = CGRect(
-          origin: CGPoint(x: 0.0, y: topSectionCellMinY),
-          size: CGSize(width: currentCellX - spacing + sectionCellInset.right - cellMinX, height: cellSize.height)
-        )
-        sectionsCellFrame.append(sectionCellFrame)
-        
-        cellsLayoutAttributes.append(cellInSectionAttributes)
-        currentY += cellSize.height + sectionCellInset.bottom
-        
-        if sectionFooterHeight > 0.0 {
-          let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionFooter, with: IndexPath(index: section))
-          sectionHeaderAttributes.frame = CGRect(
-            origin: CGPoint(x: collectionBounds.minX, y: currentY),
-            size: CGSize(width: collectionBounds.width, height: sectionFooterHeight)
-          )
-          sectionFooterViewsLayoutAttributes.append(sectionHeaderAttributes)
-          currentY += sectionFooterHeight
-        }
-        
-        let sectionFrame = CGRect(
-          origin: CGPoint(x: 0.0, y: sectionMinY),
-          size: CGSize(width: collectionViewWidth, height: currentY - sectionMinY)
-        )
-        sectionsFrame.append(sectionFrame)
-        
-        let panningScrollView = TrackingScrollView(frame: CGRect(origin: CGPoint.zero, size: sectionFrame.size))
-        panningScrollView.delegate = self
-        panningScrollView.trackingView = collectionView
-        panningScrollView.trackingFrame = sectionCellFrame
-        if section < oldPanningScrollViews.count {
-          // Apply scrolling content offset with the old offset before preparing layout
-          panningScrollView.contentOffset = oldPanningScrollViews[section].contentOffset
-        }
-                
-        cellPanningScrollViews.append(panningScrollView)
+      var currentCellX = collectionBounds.minX + sectionCellInset.left
+      if section < oldPanningScrollViews.count {
+        // Apply the old scrolling offset before preparing layout
+        currentCellX -= oldPanningScrollViews[section].contentOffset.x
       }
       
-      if let footerView = footerView {
-        footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(index: 0))
-        footerViewLayoutAttributes?.view = footerView
-        let footerViewSize = footerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-        footerViewLayoutAttributes?.size = footerViewSize
-        footerViewLayoutAttributes?.frame = CGRect(origin: CGPoint(x: collectionBounds.minX, y: currentY), size: footerViewSize)
-        currentY += footerViewSize.height
+      let cellMinX = currentCellX - sectionCellInset.left
+      currentY += sectionCellInset.top
+      let topSectionCellMinY = currentY
+      var cellInSectionAttributes: [UICollectionViewLayoutAttributes] = []
+      
+      let itemsRange: CountableRange = (0..<collectionView.numberOfItems(inSection: section))
+      let cellSizes = itemsRange
+        .map({ item -> CGSize in
+          let cellSize: CGSize
+          
+          if let delegate = collectionView.delegate as? CollectionViewDelegateShelfLayout {
+            cellSize = delegate.collectionView(collectionView, layout: self, sizeForItemAt: IndexPath(item: item, section: section))
+          } else {
+            cellSize = self.cellSize
+          }
+          
+          return cellSize
+        })
+      
+      let sectionCellHeight = cellSizes.reduce(0.0, { max($0, $1.height) })
+      
+      for item in itemsRange {
+        let cellSize = cellSizes[item]
+        let cellAttributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(item: item, section: section))
+        cellAttributes.frame = CGRect(
+          origin: CGPoint(x: currentCellX, y: currentY + (sectionCellHeight - cellSize.height) / 2),
+          size: cellSize
+        )
+        currentCellX += cellSize.width + spacing
+        cellInSectionAttributes.append(cellAttributes)
       }
+      let sectionCellFrame = CGRect(
+        origin: CGPoint(x: 0.0, y: topSectionCellMinY),
+        size: CGSize(width: currentCellX - spacing + sectionCellInset.right - cellMinX, height: sectionCellHeight)
+      )
+      sectionsCellFrame.append(sectionCellFrame)
+      
+      cellsLayoutAttributes.append(cellInSectionAttributes)
+      currentY += sectionCellHeight + sectionCellInset.bottom
+      
+      if sectionFooterHeight > 0.0 {
+        let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionFooter, with: IndexPath(index: section))
+        sectionHeaderAttributes.frame = CGRect(
+          origin: CGPoint(x: collectionBounds.minX, y: currentY),
+          size: CGSize(width: collectionBounds.width, height: sectionFooterHeight)
+        )
+        sectionFooterViewsLayoutAttributes.append(sectionHeaderAttributes)
+        currentY += sectionFooterHeight
+      }
+      
+      let sectionFrame = CGRect(
+        origin: CGPoint(x: 0.0, y: sectionMinY),
+        size: CGSize(width: collectionViewWidth, height: currentY - sectionMinY)
+      )
+      sectionsFrame.append(sectionFrame)
+      
+      let panningScrollView = TrackingScrollView(frame: CGRect(origin: CGPoint.zero, size: sectionFrame.size))
+      panningScrollView.delegate = self
+      panningScrollView.trackingView = collectionView
+      panningScrollView.trackingFrame = sectionCellFrame
+      if section < oldPanningScrollViews.count {
+        // Apply scrolling content offset with the old offset before preparing layout
+        panningScrollView.contentOffset = oldPanningScrollViews[section].contentOffset
+      }
+      
+      cellPanningScrollViews.append(panningScrollView)
+    }
+    
+    if let footerView = footerView {
+      footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(index: 0))
+      footerViewLayoutAttributes?.view = footerView
+      let footerViewSize = footerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+      footerViewLayoutAttributes?.size = footerViewSize
+      footerViewLayoutAttributes?.frame = CGRect(origin: CGPoint(x: collectionBounds.minX, y: currentY), size: footerViewSize)
+      currentY += footerViewSize.height
     }
   }
     
@@ -205,9 +234,11 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
     
     let sectionCellInsetHeight = (sectionCellInset.bottom + sectionCellInset.top) * numberOfSections
     
+    let heightOfAllSectionCells = sectionsCellFrame.reduce(0.0, { $0 + $1.height })
+    
     return CGSize(
       width: width,
-      height: headerHeight + footerHeight + sectionHeaderHeight + sectionFooterHeight + sectionCellInsetHeight + (cellSize.height * numberOfSections)
+      height: headerHeight + footerHeight + sectionHeaderHeight + sectionFooterHeight + sectionCellInsetHeight + heightOfAllSectionCells
     )
   }
   

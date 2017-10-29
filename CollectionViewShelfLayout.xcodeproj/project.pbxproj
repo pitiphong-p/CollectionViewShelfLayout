@@ -11,6 +11,7 @@
 		8A8C89391D4A797100E2F53B /* CollectionViewShelfLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8DB5131D476F7F00F21FC7 /* CollectionViewShelfLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A8DB5171D476F7F00F21FC7 /* CollectionViewShelfLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A8DB51F1D476FF400F21FC7 /* CollectionViewShelfLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */; };
+		8A91137C1FA5D7CA005029FB /* CustomItemSizeDemoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91137B1FA5D7CA005029FB /* CustomItemSizeDemoCollectionViewController.swift */; };
 		8AC87D7D1D48EF7C00B0DAFE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC87D731D48EF7C00B0DAFE /* AppDelegate.swift */; };
 		8AC87D7E1D48EF7C00B0DAFE /* Apps.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC87D741D48EF7C00B0DAFE /* Apps.plist */; };
 		8AC87D7F1D48EF7C00B0DAFE /* AppStoreCollectionViewLayoutDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC87D751D48EF7C00B0DAFE /* AppStoreCollectionViewLayoutDemoViewController.swift */; };
@@ -48,6 +49,7 @@
 		8A8DB5161D476F7F00F21FC7 /* CollectionViewShelfLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewShelfLayout.h; sourceTree = "<group>"; };
 		8A8DB5181D476F7F00F21FC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A8DB51E1D476FF400F21FC7 /* CollectionViewShelfLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewShelfLayout.swift; sourceTree = "<group>"; };
+		8A91137B1FA5D7CA005029FB /* CustomItemSizeDemoCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemSizeDemoCollectionViewController.swift; sourceTree = "<group>"; };
 		8AC87D4E1D48EEFE00B0DAFE /* AppStoreCollectionViewLayout-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppStoreCollectionViewLayout-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC87D721D48EF7B00B0DAFE /* AppStoreCollectionViewLayout-Demo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppStoreCollectionViewLayout-Demo-Bridging-Header.h"; sourceTree = "<group>"; };
 		8AC87D731D48EF7C00B0DAFE /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,13 +111,14 @@
 		8AC87D4F1D48EEFE00B0DAFE /* AppStoreCollectionViewLayout-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				8AC87D721D48EF7B00B0DAFE /* AppStoreCollectionViewLayout-Demo-Bridging-Header.h */,
+				8AC87D741D48EF7C00B0DAFE /* Apps.plist */,
+				8AC87D7C1D48EF7C00B0DAFE /* Info.plist */,
 				8AC87D731D48EF7C00B0DAFE /* AppDelegate.swift */,
 				8AC87D751D48EF7C00B0DAFE /* AppStoreCollectionViewLayoutDemoViewController.swift */,
+				8A91137B1FA5D7CA005029FB /* CustomItemSizeDemoCollectionViewController.swift */,
 				8AC87D761D48EF7C00B0DAFE /* Assets.xcassets */,
 				8AC87D771D48EF7C00B0DAFE /* Base.lproj */,
-				8AC87D7C1D48EF7C00B0DAFE /* Info.plist */,
-				8AC87D741D48EF7C00B0DAFE /* Apps.plist */,
-				8AC87D721D48EF7B00B0DAFE /* AppStoreCollectionViewLayout-Demo-Bridging-Header.h */,
 			);
 			path = "AppStoreCollectionViewLayout-Demo";
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A91137C1FA5D7CA005029FB /* CustomItemSizeDemoCollectionViewController.swift in Sources */,
 				8AC87D7F1D48EF7C00B0DAFE /* AppStoreCollectionViewLayoutDemoViewController.swift in Sources */,
 				8AC87D7D1D48EF7C00B0DAFE /* AppDelegate.swift in Sources */,
 			);
