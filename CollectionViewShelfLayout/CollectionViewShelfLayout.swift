@@ -25,7 +25,7 @@ public protocol CollectionViewDelegateShelfLayout: UICollectionViewDelegate {
 
 extension CollectionViewDelegateShelfLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize.zero
+    return (collectionViewLayout as? CollectionViewShelfLayout)?.cellSize ?? CGSize.zero
   }
 }
 
@@ -146,12 +146,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
           let cellSize: CGSize
           
           if let delegate = collectionView.delegate as? CollectionViewDelegateShelfLayout {
-            let preferredSize = delegate.collectionView(collectionView, layout: self, sizeForItemAt: IndexPath(item: item, section: section))
-            if !preferredSize.width.isZero || !preferredSize.height.isZero {
-              cellSize = preferredSize
-            } else {
-              cellSize = self.cellSize
-            }
+            cellSize = delegate.collectionView(collectionView, layout: self, sizeForItemAt: IndexPath(item: item, section: section))
           } else {
             cellSize = self.cellSize
           }
@@ -159,7 +154,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
           return cellSize
         })
       
-      let sectionCellHeight = cellSizes.reduce(0.0, { max($0, $1.height) }) 
+      let sectionCellHeight = cellSizes.reduce(0.0, { max($0, $1.height) })
       
       for item in itemsRange {
         let cellSize = cellSizes[item]
