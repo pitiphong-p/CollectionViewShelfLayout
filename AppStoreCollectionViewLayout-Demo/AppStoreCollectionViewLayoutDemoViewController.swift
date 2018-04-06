@@ -78,7 +78,7 @@ class AppStoreCollectionViewLayoutDemoViewController: UICollectionViewController
     var appData = [Section: [AppDetail]]()
     for (sectionName, apps) in appDataPList {
       let appDetails: [AppDetail]
-      appDetails = apps.flatMap(AppDetail.init(plistData:))
+      appDetails = apps.compactMap(AppDetail.init(plistData:))
       let section = Section(rawValue: sectionName)!
       appData[section] = appDetails
     }
