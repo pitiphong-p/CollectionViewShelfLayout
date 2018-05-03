@@ -284,7 +284,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
   }
   
   open override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-    return cellsLayoutAttributes[indexPath.section][indexPath.row]
+    return cellsLayoutAttributes[indexPath.section][indexPath.item]
   }
   
   open override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
@@ -299,11 +299,14 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
   }
   
   open override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+    guard let sectionIndex = indexPath.index(of: 0) else {
+      return nil
+    }
     switch elementKind {
     case ShelfElementKindSectionHeader:
-      return sectionHeaderViewsLayoutAttributes[indexPath.section]
+      return sectionHeaderViewsLayoutAttributes[sectionIndex]
     case ShelfElementKindSectionFooter:
-      return sectionFooterViewsLayoutAttributes[indexPath.section]
+      return sectionFooterViewsLayoutAttributes[sectionIndex]
     default:
       return nil
     }
