@@ -5,7 +5,7 @@ A UICollectionViewLayout subclass displays its items as rows of items similar to
 
 # Requirements
 - iOS 9+
-- Swift 3.0+
+- Swift 4.0+
 
 This requirement is due to usage of some Auto Layout APIs available in iOS 8 and 9 or later.
  If you want to use `CollectionViewShelfLayout` in iOS 8, you can replace NSLayoutAnchor usage with other APIs.
@@ -29,8 +29,8 @@ github "pitiphong-p/CollectionViewShelfLayout"
 ````
 ## Swift 2
 You can use CollectionViewShelfLayout in Swift 2.2 by checking out tag `0.5.5`
-## Swift 4
-You can use CollectionViewShelfLayout in Swift 4.0 (which is currently in Beta) by checking out branch `swift-4`
+## Swift 4.2
+You can use CollectionViewShelfLayout in Swift 4.2 (which is currently in Beta) by checking out branch `swift-4.2`
 
 # Usage
 Set collecion view's layout to an instance of `CollectionViewShelfLayout`. Set the layout's properties you want (eg. cellSize). You can set its layout both via code or `Storyboard`.
