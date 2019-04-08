@@ -1,7 +1,7 @@
 # CollectionViewShelfLayout
 A UICollectionViewLayout subclass displays its items as rows of items similar to the App Store Feature tab without a nested UITableView/UICollectionView hack. You can use a single data source for all of your contents. Each section displays its items in a row. `CollectionViewShelfLayout` supports collection view's *header view and footer view* similar to table view's *tableHeaderView and tableFooterView* also *sections' header and footer views* too.
 
-![CollectionViewShelfLayout screenshot](https://s3.amazonaws.com/cocoacontrols_production/uploads/control_image/image/9666/CollectionViewShelfLayout_small.png)
+![CollectionViewShelfLayout screenshot](https://cocoacontrols-production.s3.amazonaws.com/uploads/control_image/image/9666/CollectionViewShelfLayout_small.png)
 
 # Requirements
 - iOS 9+
@@ -29,8 +29,8 @@ github "pitiphong-p/CollectionViewShelfLayout"
 ````
 ## Swift 2
 You can use CollectionViewShelfLayout in Swift 2.2 by checking out tag `0.5.5`
-## Swift 4.2
-You can use CollectionViewShelfLayout in Swift 4.2 (which is currently in Beta) by checking out branch `swift-4.2`
+## Swift 4.0
+You can use CollectionViewShelfLayout in Swift 4.0 by checking out tag `0.6.4`
 
 # Usage
 Set collecion view's layout to an instance of `CollectionViewShelfLayout`. Set the layout's properties you want (eg. cellSize). You can set its layout both via code or `Storyboard`.

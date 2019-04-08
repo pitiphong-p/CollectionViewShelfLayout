@@ -49,7 +49,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
   /// A height of each section footer. Set this value to 0.0 if you don't want section footer views. Default is *0.0*
   @IBInspectable open var sectionFooterHeight: CGFloat = 0.0
   /// An inset around the cell area in each section inset from section header and footer view and the collection view's bounds. Default is *zero* on every sides.
-  @IBInspectable open var sectionCellInset: UIEdgeInsets = UIEdgeInsets.zero
+  @IBInspectable open var sectionCellInset: UIEdgeInsets = UIEdgeInsets()
   /// A size of each cells.
   @IBInspectable open var cellSize: CGSize = CGSize.zero
   /// Horizontal spacing between cells. Default value is *8.0*
