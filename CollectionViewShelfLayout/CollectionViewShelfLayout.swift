@@ -299,7 +299,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
   }
   
   open override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-    guard let sectionIndex = indexPath.index(of: 0) else {
+    guard let sectionIndex = indexPath.firstIndex(of: 0) else {
       return nil
     }
     switch elementKind {
@@ -315,7 +315,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
   open override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
     if let context = context as? CollectionViewShelfLayoutInvalidationContext,
       let panningInformation = context.panningScrollView,
-      let indexOfPanningScrollView = cellPanningScrollViews.index(of: panningInformation) {
+      let indexOfPanningScrollView = cellPanningScrollViews.firstIndex(of: panningInformation) {
       
       let panningCellsAttributes = cellsLayoutAttributes[indexOfPanningScrollView]
       let minX = panningCellsAttributes

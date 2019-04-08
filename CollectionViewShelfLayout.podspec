@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "CollectionViewShelfLayout"
-  s.version      = "0.6.5"
+  s.version      = "0.6.6"
   s.summary      = "A UICollectionViewLayout subclass displays as rows of items similar to App Store Feature tab without a nested UITable/CollectionView hack."
 
   s.description  = "A UICollectionViewLayout subclass displays its items as rows of items similar to the App Store Feature tab without a nested UITableView/UICollectionView hack. You can use a single data source for all of your contents. Each section displays its items in a row. CollectionViewShelfLayout supports collection view's header view and footer view similar to table view's tableHeaderView and tableFooterView also sections' header and footer views too."
@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
 
   s.source_files  = ["CollectionViewShelfLayout/*.swift"]
 
-  s.xcconfig = { 'SWIFT_VERSION' => '4.2' }
+  s.xcconfig = { 'SWIFT_VERSION' => '5.0' }
 
 end

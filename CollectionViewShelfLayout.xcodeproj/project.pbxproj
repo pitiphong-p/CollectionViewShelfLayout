@@ -195,17 +195,17 @@
 				TargetAttributes = {
 					8A8DB5121D476F7F00F21FC7 = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					8AC87D4D1D48EEFE00B0DAFE = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
 			buildConfigurationList = 8A8DB50D1D476F7F00F21FC7 /* Build configuration list for PBXProject "CollectionViewShelfLayout" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
