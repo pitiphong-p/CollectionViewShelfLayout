@@ -13,9 +13,9 @@ private let ShelfElementKindCollectionHeader = "ShelfElementKindCollectionHeader
 private let ShelfElementKindCollectionFooter = "ShelfElementKindCollectionFooter"
 
 /// An element kind of *Section Header*
-public let ShelfElementKindSectionHeader = "ShelfElementKindSectionHeader"
+public let ShelfElementKindSectionHeader = UICollectionView.elementKindSectionHeader
 /// An element kind of *Section Footer*
-public let ShelfElementKindSectionFooter = "ShelfElementKindSectionFooter"
+public let ShelfElementKindSectionFooter = UICollectionView.elementKindSectionFooter
 
 
 public protocol CollectionViewDelegateShelfLayout: UICollectionViewDelegate {
@@ -108,7 +108,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
     let collectionBounds = collectionView.bounds
     let collectionViewWidth = collectionBounds.width
     if let headerView = headerView {
-      headerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionHeader, with: IndexPath(index: 0))
+      headerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionHeader, with: IndexPath(item: 0, section: 0))
       headerViewLayoutAttributes?.view = headerView
       let headerViewSize = headerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
       headerViewLayoutAttributes?.size = headerViewSize
@@ -120,7 +120,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
     for section in 0..<numberOfSections {
       let sectionMinY = currentY
       if sectionHeaderHeight > 0.0 {
-        let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionHeader, with: IndexPath(index: section))
+        let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionHeader, with: IndexPath(item: 0, section: section))
         sectionHeaderAttributes.frame = CGRect(
           origin: CGPoint(x: collectionBounds.minX, y: currentY),
           size: CGSize(width: collectionBounds.width, height: sectionHeaderHeight)
@@ -176,7 +176,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
       currentY += sectionCellHeight + sectionCellInset.bottom
       
       if sectionFooterHeight > 0.0 {
-        let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionFooter, with: IndexPath(index: section))
+        let sectionHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: ShelfElementKindSectionFooter, with: IndexPath(item: 0, section: section))
         sectionHeaderAttributes.frame = CGRect(
           origin: CGPoint(x: collectionBounds.minX, y: currentY),
           size: CGSize(width: collectionBounds.width, height: sectionFooterHeight)
@@ -204,7 +204,7 @@ open class CollectionViewShelfLayout: UICollectionViewLayout {
     }
     
     if let footerView = footerView {
-      footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(index: 0))
+      footerViewLayoutAttributes = CollectionViewShelfLayoutHeaderFooterViewLayoutAttributes(forDecorationViewOfKind: ShelfElementKindCollectionFooter, with: IndexPath(item: 0, section: 0))
       footerViewLayoutAttributes?.view = footerView
       let footerViewSize = footerView.systemLayoutSizeFitting(CGSize(width: collectionViewWidth, height: 0.0), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
       footerViewLayoutAttributes?.size = footerViewSize
