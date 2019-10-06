@@ -1,0 +1,6 @@
+framework module CollectionViewShelfLayout {
+  umbrella header "CollectionViewShelfLayout-umbrella.h"
+
+  export *
+  module * { export * }
+}

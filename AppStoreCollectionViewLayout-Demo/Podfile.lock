@@ -1,0 +1,16 @@
+PODS:
+  - CollectionViewShelfLayout (0.6.6)
+
+DEPENDENCIES:
+  - CollectionViewShelfLayout (from `../`)
+
+EXTERNAL SOURCES:
+  CollectionViewShelfLayout:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CollectionViewShelfLayout: f512e7160b547bd25229d69f82f68eed73d5d5a4
+
+PODFILE CHECKSUM: 5e1e547e818f901d8325fb95a2e33161577197b9
+
+COCOAPODS: 1.7.5
